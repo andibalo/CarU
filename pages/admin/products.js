@@ -24,8 +24,13 @@ export async function getServerSideProps() {
   const snapshot = await productsRef.get();
 
   snapshot.forEach((doc) => {
-    console.log(doc.id, "=>", doc.data());
-    products.push(doc.data());
+    products.push({
+      name: doc.data().name,
+      description: doc.data().description,
+      price: doc.data().price,
+      year: doc.data().year,
+      quantity: doc.data().quantity,
+    });
   });
 
   return {

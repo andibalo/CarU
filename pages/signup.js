@@ -16,6 +16,7 @@ import { Button } from "../components/atoms/Button";
 import { Footer } from "../components/footer";
 import Link from "next/link";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
+import { getSession } from "next-auth/client";
 
 const SignUp = () => {
   const emailRef = useRef();
@@ -80,6 +81,7 @@ const SignUp = () => {
                 placeholder="Email Address"
                 mb="3"
                 ref={emailRef}
+                focusBorderColor="brand.100"
               />
               <Input
                 variant="flushed"
@@ -87,6 +89,7 @@ const SignUp = () => {
                 placeholder="Password"
                 mb="3"
                 ref={passwordRef}
+                focusBorderColor="brand.100"
               />
 
               <Text>
@@ -109,3 +112,22 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+}

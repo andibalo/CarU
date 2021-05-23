@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Flex,
   Spacer,
@@ -10,10 +11,11 @@ import {
   MenuList,
   MenuItem,
   IconButton,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Brand } from "./atoms/brand";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/client";
+import { signOut, getSession } from "next-auth/client";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 import { AiOutlineShoppingCart } from "@react-icons/all-files/ai/AiOutlineShoppingCart";
 import { AiOutlineAppstore } from "@react-icons/all-files/ai/AiOutlineAppstore";
@@ -21,7 +23,15 @@ import { AiOutlineLogout } from "@react-icons/all-files/ai/AiOutlineLogout";
 import { AiOutlineCrown } from "@react-icons/all-files/ai/AiOutlineCrown";
 
 export const Navbar = ({ isAdmin = false }) => {
-  const [session, loading] = useSession();
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    getSession().then((data) => {
+      setSession(data);
+      setLoading(false);
+    });
+  }, []);
 
   const handleLogout = () => {
     signOut();
@@ -78,6 +88,7 @@ export const Navbar = ({ isAdmin = false }) => {
                 </MenuList>
               </Menu>
             )}
+            {loading && <Skeleton height="40px" width="40px" />}
           </HStack>
         </Flex>
       </Container>
