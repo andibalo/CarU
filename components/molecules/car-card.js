@@ -12,6 +12,9 @@ export const CarCard = () => {
       minHeight="md"
       borderRadius="lg"
       alignItems="center"
+      borderWidth="1px"
+      borderColor="gray.200"
+      borderStyle="solid"
     >
       <Flex direction="column" h="full">
         <Box

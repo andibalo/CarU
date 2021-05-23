@@ -2,7 +2,7 @@ import { Navbar } from "../../components/navbar";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { SideBar } from "../../components/admin/sidebar";
 
-export default function AdminHome() {
+export default function Orders() {
   return (
     <Flex direction="column" minH="100vh" position="relative">
       <Navbar isAdmin />

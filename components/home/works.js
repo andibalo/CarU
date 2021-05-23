@@ -1,6 +1,17 @@
 import { SectionWrapper } from "../atoms/section-wrapper";
-import { Container, Text, Flex, Stack, Box, Heading } from "@chakra-ui/react";
+import {
+  Container,
+  Text,
+  Flex,
+  Stack,
+  Box,
+  Heading,
+  Icon,
+} from "@chakra-ui/react";
 import { SectionHeader } from "../atoms/section-header";
+import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
+import { AiOutlineCar } from "@react-icons/all-files/ai/AiOutlineCar";
+import { AiOutlineCheckCircle } from "@react-icons/all-files/ai/AiOutlineCheckCircle";
 
 export const Works = () => {
   return (
@@ -23,8 +34,18 @@ export const Works = () => {
               minHeight="md"
               borderRadius="lg"
               alignItems="center"
+              borderWidth="1px"
+              borderColor="gray.200"
+              borderStyle="solid"
             >
               <Box>
+                <Icon
+                  as={AiOutlineUser}
+                  color="brand.100"
+                  boxSize="12"
+                  mb="3"
+                />
+
                 <Heading as="h5" size="md" mb="3">
                   Create A Profile
                 </Heading>
@@ -43,8 +64,13 @@ export const Works = () => {
               borderRadius="lg"
               minHeight="md"
               alignItems="center"
+              borderWidth="1px"
+              borderColor="gray.200"
+              borderStyle="solid"
             >
               <Box>
+                <Icon as={AiOutlineCar} color="brand.100" boxSize="12" mb="3" />
+
                 <Heading as="h5" size="md" mb="3">
                   Choose A Car
                 </Heading>
@@ -62,8 +88,18 @@ export const Works = () => {
               borderRadius="lg"
               minHeight="md"
               alignItems="center"
+              borderWidth="1px"
+              borderColor="gray.200"
+              borderStyle="solid"
             >
               <Box>
+                <Icon
+                  as={AiOutlineCheckCircle}
+                  color="brand.100"
+                  boxSize="12"
+                  mb="3"
+                />
+
                 <Heading as="h5" size="md" mb="3">
                   Place An Order
                 </Heading>

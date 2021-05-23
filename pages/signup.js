@@ -1,3 +1,5 @@
+import React, { useRef } from "react";
+import axios from "axios";
 import { Navbar } from "../components/navbar";
 import {
   Flex,
@@ -7,12 +9,34 @@ import {
   Text,
   Input,
   Spacer,
+  Icon,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { Button } from "../components/atoms/Button";
 import { Footer } from "../components/footer";
 import Link from "next/link";
+import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 
 const SignUp = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const handleSubmitSignUp = async () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    try {
+      const res = await axios.post("/api/auth/signup", {
+        email,
+        password,
+      });
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Flex direction="column" minH="100vh">
@@ -38,28 +62,43 @@ const SignUp = () => {
             borderStyle="solid"
           >
             <Flex direction="column" minH="xs">
-              <Heading
-                as="h5"
-                color="brand.100"
-                fontSize="xl"
-                textAlign="center"
-                mb="5"
-              >
-                Let's Get You Started!
-              </Heading>
-              <Input variant="flushed" placeholder="Email Address" mb="3" />
-              <Input variant="flushed" placeholder="Password" mb="3" />
+              <Box textAlign="center">
+                <Icon
+                  as={AiOutlineUser}
+                  color="brand.100"
+                  boxSize="12"
+                  mb="3"
+                />
+                <Heading as="h5" color="gray.800" fontSize="xl" mb="5">
+                  Let's Get You Started!
+                </Heading>
+              </Box>
+
+              <Input
+                variant="flushed"
+                type="email"
+                placeholder="Email Address"
+                mb="3"
+                ref={emailRef}
+              />
+              <Input
+                variant="flushed"
+                type="password"
+                placeholder="Password"
+                mb="3"
+                ref={passwordRef}
+              />
 
               <Text>
                 Already have an account?{" "}
                 <Link href="/login">
-                  <Text display="inline" color="brand.100" fontWeight="bold">
+                  <ChakraLink color="brand.100" fontWeight="bold">
                     Login
-                  </Text>
+                  </ChakraLink>
                 </Link>
               </Text>
               <Spacer />
-              <Button>Sign Up</Button>
+              <Button onClick={handleSubmitSignUp}>Sign Up</Button>
             </Flex>
           </Box>
         </Container>
