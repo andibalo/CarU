@@ -7,7 +7,7 @@ export default function Orders() {
     <Flex direction="column" minH="100vh" position="relative">
       <Navbar isAdmin />
       <Flex flex="1">
-        <SideBar />
+        <SideBar route="orders" />
         <Box flex="1" p="10">
           <Text>test</Text>
         </Box>

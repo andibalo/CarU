@@ -15,7 +15,7 @@ export const SideBar = ({ route }) => {
     >
       <Box h="20" display="flex" position="relative">
         <Box
-          bg="brand.100"
+          bg={route === "create" ? "brand.100" : "gray.400"}
           h="full"
           w="10px"
           position="absolute"
@@ -29,7 +29,8 @@ export const SideBar = ({ route }) => {
             justifyContent="center"
             alignItems="center"
             fontSize="xl"
-            fontWeight="semibold"
+            fontWeight={route === "create" ? "semibold" : "normal"}
+            color={route === "create" ? "gray.900" : "gray.400"}
           >
             Create Product
           </ChakraLink>
@@ -38,7 +39,7 @@ export const SideBar = ({ route }) => {
 
       <Box h="20" display="flex" position="relative">
         <Box
-          bg="gray.400"
+          bg={route === "products" ? "brand.100" : "gray.400"}
           h="full"
           w="10px"
           position="absolute"
@@ -52,7 +53,8 @@ export const SideBar = ({ route }) => {
             justifyContent="center"
             alignItems="center"
             fontSize="xl"
-            color="gray.500"
+            fontWeight={route === "products" ? "semibold" : "normal"}
+            color={route === "products" ? "gray.900" : "gray.400"}
           >
             Product List
           </ChakraLink>
@@ -61,7 +63,7 @@ export const SideBar = ({ route }) => {
 
       <Box h="20" display="flex" position="relative">
         <Box
-          bg="gray.400"
+          bg={route === "orders" ? "brand.100" : "gray.400"}
           h="full"
           w="10px"
           position="absolute"
@@ -75,7 +77,8 @@ export const SideBar = ({ route }) => {
             justifyContent="center"
             alignItems="center"
             fontSize="xl"
-            color="gray.500"
+            fontWeight={route === "orders" ? "semibold" : "normal"}
+            color={route === "orders" ? "gray.900" : "gray.400"}
           >
             Orders
           </ChakraLink>

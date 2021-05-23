@@ -1,6 +1,7 @@
-import { Text, Flex, Box, Spacer } from "@chakra-ui/react";
+import { Text, Flex, Box, Spacer, Icon } from "@chakra-ui/react";
 import { Button } from "../atoms/Button";
 import Image from "next/image";
+import { AiOutlineDollarCircle } from "@react-icons/all-files/ai/AiOutlineDollarCircle";
 
 export const CarCard = () => {
   return (
@@ -9,7 +10,7 @@ export const CarCard = () => {
       boxShadow="xl"
       flex="1"
       bg="white"
-      minHeight="md"
+      minHeight="sm"
       borderRadius="lg"
       alignItems="center"
       borderWidth="1px"
@@ -28,15 +29,28 @@ export const CarCard = () => {
           <Image src="/placeholder.png" layout="fill" objectFit="cover" />
         </Box>
         <Box>
-          <Text color="gray.500" fontWeight="semibold">
-            2019
-          </Text>
-          <Text fontWeight="semibold" fontSize="lg">
+          <Text color="gray.500">2019</Text>
+          <Text fontWeight="bold" fontSize="lg" mb="3">
             Toyota Mercury
           </Text>
-          <Text fontWeight="bold" color="brand.100" fontSize="xl">
-            300rb/day
-          </Text>
+          <Flex alignItems="center">
+            <Flex alignItems="center">
+              <Icon as={AiOutlineDollarCircle} boxSize="6" color="gray.900" />
+              <Text ml="1">Price</Text>
+            </Flex>
+            <Spacer />
+            <Text fontWeight="bold" color="brand.100" fontSize="xl">
+              Rp. 300rb
+              <Text
+                display="inline"
+                color="gray.500"
+                fontFamily="body"
+                fontSize="sm"
+              >
+                /day
+              </Text>
+            </Text>
+          </Flex>
         </Box>
         <Spacer />
         <Button>Rent Now</Button>
