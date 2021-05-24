@@ -1,18 +1,15 @@
 import { Navbar } from "../../components/navbar";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { SideBar } from "../../components/admin/sidebar";
-import { OrderCard } from "../../components/molecules/order-card";
 
-export default function Orders() {
+export default function Dashboard() {
   return (
     <Flex direction="column" minH="100vh" position="relative">
-      <Navbar isAdmin />
+      <Navbar />
       <Flex flex="1">
-        <SideBar route="orders" />
+        <SideBar route="edit-profile" isUser />
         <Box flex="1" p="10">
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          <Text>test</Text>
         </Box>
       </Flex>
     </Flex>

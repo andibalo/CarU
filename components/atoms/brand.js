@@ -4,7 +4,7 @@ import Link from "next/link";
 export const Brand = ({ alt = false, mb, isAdmin = false }) => {
   return (
     <Link href="/">
-      <Heading color={alt ? "white" : "gray.800"} mb={mb}>
+      <Heading color={alt ? "white" : "gray.800"} mb={mb} cursor="pointer">
         Car
         <Box display="inline" color={alt ? "gray.800" : "brand.100"}>
           U

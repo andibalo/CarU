@@ -15,13 +15,19 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Image,
+  Stack,
+  Icon,
 } from "@chakra-ui/react";
 import { SideBar } from "../../components/admin/sidebar";
 import { Button } from "../../components/atoms/Button";
 import axios from "axios";
 import { getSession } from "next-auth/client";
+import { AiOutlineFileImage } from "@react-icons/all-files/ai/AiOutlineFileImage";
+import { storage } from "../../utils/firebase/index";
 
-export default function AdminHome() {
+export default function AdminHome(props) {
+  const MAX_IMG_UPLOAD = 3;
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -29,6 +35,9 @@ export default function AdminHome() {
     price: 0,
     year: "",
   });
+
+  const [previewImages, setPreviewImages] = useState([]);
+  const [uploadImages, setUploadImages] = useState([]);
 
   const { name, description, quantity, price, year } = formData;
 
@@ -49,11 +58,88 @@ export default function AdminHome() {
     }
   };
 
+  const handleUploadImages = async () => {
+    console.log(uploadImages[0]);
+
+    let metadata = {
+      contentType: uploadImages[0].type,
+    };
+
+    const uploadTask = storage
+      .ref(
+        `images/${uploadImages[0].name}.${uploadImages[0].type.split("/")[1]}`
+      )
+      .put(uploadImages[0], metadata);
+
+    uploadTask.on(
+      "state_changed",
+      function (snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      function (error) {
+        // Handle unsuccessful uploads
+      },
+      function () {
+        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          console.log("File available at", downloadURL);
+        });
+      }
+    );
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleChooseImage = (e) => {
+    console.log(e.target.files);
+
+    setUploadImages([...uploadImages, e.target.files[0]]);
+
+    setPreviewImages([
+      ...previewImages,
+      URL.createObjectURL(e.target.files[0]),
+    ]);
+  };
+
+  const renderPlaceholderImage = () => {
+    let imageStrips = [];
+
+    if (previewImages.length > 0) {
+      previewImages.forEach((img, i) => {
+        imageStrips.push(
+          <Image
+            boxSize="150px"
+            objectFit="cover"
+            src={img}
+            alt={"image-" + i}
+            key={i}
+          />
+        );
+      });
+    }
+
+    if (previewImages.length < MAX_IMG_UPLOAD) {
+      imageStrips.push(
+        <Flex
+          key="placeholderimg"
+          alignItems="center"
+          justifyContent="center"
+          bg="gray.200"
+          width="150px"
+          height="150px"
+          borderRadius="xl"
+        >
+          <Icon as={AiOutlineFileImage} boxSize="8" />
+        </Flex>
+      );
+    }
+
+    return imageStrips;
   };
 
   return (
@@ -71,6 +157,18 @@ export default function AdminHome() {
             borderStyle="solid"
             p="5"
           >
+            <Stack direction="row" spacing="5">
+              {renderPlaceholderImage()}
+            </Stack>
+            <FormControl mb="3" mt="3">
+              <FormLabel>Upload Product Image</FormLabel>
+              <Input
+                type="file"
+                onChange={(e) => handleChooseImage(e)}
+                isDisabled={previewImages.length === MAX_IMG_UPLOAD}
+              />
+              <FormHelperText>Maximum of 3 images</FormHelperText>
+            </FormControl>
             <FormControl id="name" mb="3">
               <FormLabel>Product Name</FormLabel>
               <Input
@@ -134,6 +232,7 @@ export default function AdminHome() {
               </NumberInput>
             </FormControl>
             <Button onClick={handleSubmit}>Create</Button>
+            <Button onClick={handleUploadImages}>Test</Button>
           </Box>
         </Box>
       </Flex>
