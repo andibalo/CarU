@@ -2,6 +2,7 @@ import { Heading, Flex, Container, Box } from "@chakra-ui/react";
 import { Navbar } from "../../components/navbar";
 import { CirclePattern } from "../../components/molecules/circle-pattern";
 import { Button } from "../atoms/Button";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -36,7 +37,9 @@ export const Hero = () => {
               </Box>
             </Heading>
             <Flex mt="6">
-              <Button>Rent A Car</Button>
+              <Link href="/cars">
+                <Button>Rent A Car</Button>
+              </Link>
               <Button variant="outline" ml="3">
                 Learn More
               </Button>

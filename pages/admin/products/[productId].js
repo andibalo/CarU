@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar } from "../../components/navbar";
+import { Navbar } from "../../../components/navbar";
 import {
   Box,
   Flex,
@@ -18,27 +18,31 @@ import {
   Image,
   Stack,
   Icon,
+  Button as ChakraButton,
 } from "@chakra-ui/react";
-import { SideBar } from "../../components/admin/sidebar";
-import { Button } from "../../components/atoms/Button";
+import { SideBar } from "../../../components/admin/sidebar";
+import { Button } from "../../../components/atoms/Button";
 import axios from "axios";
 import { getSession } from "next-auth/client";
 import { AiOutlineFileImage } from "@react-icons/all-files/ai/AiOutlineFileImage";
-import { storage } from "../../utils/firebase/index";
+import { AiOutlineLeft } from "@react-icons/all-files/ai/AiOutlineLeft";
 import { useRouter } from "next/router";
+import db from "../../../utils/db/index";
+import Link from "next/link";
 
 const MAX_IMG_UPLOAD = 3;
 
-export default function AdminHome(props) {
+export default function EditProduct(props) {
+  console.log(props.product);
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    quantity: 1,
-    price: 0,
-    year: "2021",
-    brand: "audi",
-    images: [],
+    name: props.product.name,
+    description: props.product.description,
+    quantity: props.product.quantity,
+    price: props.product.price,
+    year: props.product.year,
+    brand: props.product.brand,
+    images: props.product.images,
   });
 
   const [previewImages, setPreviewImages] = useState([]);
@@ -68,37 +72,33 @@ export default function AdminHome(props) {
   };
 
   const handleUploadImage = async (uploadImage) => {
-    console.log(uploadImage);
-
-    let metadata = {
-      contentType: uploadImage.type,
-    };
-
-    const uploadTask = storage
-      .ref(`images/${uploadImage.name}}`)
-      .put(uploadImage, metadata);
-
-    uploadTask.on(
-      "state_changed",
-      function (snapshot) {
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-      },
-      function (error) {
-        // Handle unsuccessful uploads
-      },
-      function () {
-        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          console.log("File available at", downloadURL);
-
-          setFormData({
-            ...formData,
-            images: [...images, downloadURL],
-          });
-          return Promise.resolve();
-        });
-      }
-    );
+    // console.log(uploadImage);
+    // let metadata = {
+    //   contentType: uploadImage.type,
+    // };
+    // const uploadTask = storage
+    //   .ref(`images/${uploadImage.name}}`)
+    //   .put(uploadImage, metadata);
+    // uploadTask.on(
+    //   "state_changed",
+    //   function (snapshot) {
+    //     var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //     console.log("Upload is " + progress + "% done");
+    //   },
+    //   function (error) {
+    //     // Handle unsuccessful uploads
+    //   },
+    //   function () {
+    //     uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+    //       console.log("File available at", downloadURL);
+    //       setFormData({
+    //         ...formData,
+    //         images: [...images, downloadURL],
+    //       });
+    //       return Promise.resolve();
+    //     });
+    //   }
+    // );
   };
 
   const handleChange = (e) => {
@@ -162,7 +162,7 @@ export default function AdminHome(props) {
     <Flex direction="column" minH="100vh" position="relative">
       <Navbar isAdmin />
       <Flex flex="1">
-        <SideBar route="create" />
+        <SideBar route="products" />
         <Box flex="1" p="10">
           <Box
             h="full"
@@ -173,6 +173,12 @@ export default function AdminHome(props) {
             borderStyle="solid"
             p="5"
           >
+            <Link href="/admin/products">
+              <ChakraButton leftIcon={<AiOutlineLeft />} variant="ghost" mb="8">
+                Return to product list
+              </ChakraButton>
+            </Link>
+
             <Stack direction="row" spacing="5">
               {renderImageStrip()}
             </Stack>
@@ -240,7 +246,7 @@ export default function AdminHome(props) {
             </FormControl>
             <FormControl id="quantity" mb="3">
               <FormLabel>Quantity</FormLabel>
-              <NumberInput defaultValue={1} min={1} max={99}>
+              <NumberInput defaultValue={quantity} min={1} max={99}>
                 <NumberInputField
                   name="quantity"
                   value={quantity}
@@ -254,7 +260,7 @@ export default function AdminHome(props) {
             </FormControl>
             <FormControl id="price" mb="6">
               <FormLabel>Price</FormLabel>
-              <NumberInput defaultValue={0} min={0}>
+              <NumberInput defaultValue={price} min={0}>
                 <NumberInputField
                   name="price"
                   value={price}
@@ -262,7 +268,7 @@ export default function AdminHome(props) {
                 />
               </NumberInput>
             </FormControl>
-            <Button onClick={handleSubmit}>Create</Button>
+            <Button onClick={handleSubmit}>Edit</Button>
           </Box>
         </Box>
       </Flex>
@@ -282,9 +288,30 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const productRef = db.collection("products").doc(context.query.productId);
+  const doc = await productRef.get();
+
+  if (!doc.exists) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const product = {
+    id: doc.id,
+    name: doc.data().name,
+    description: doc.data().description,
+    price: doc.data().price,
+    year: doc.data().year,
+    quantity: doc.data().quantity,
+    images: doc.data().images,
+    brand: doc.data().brand,
+  };
+
   return {
     props: {
       session,
+      product,
     },
   };
 }

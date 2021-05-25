@@ -41,7 +41,7 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const FieldValue = admin.firestore.FieldValue;
 
-    const { name, description, year, quantity, price } = req.body;
+    const { name, description, year, quantity, price, images } = req.body;
 
     await validateBody(req, res);
 
@@ -57,6 +57,7 @@ export default async function handler(req, res) {
       year,
       quantity: parseInt(quantity),
       price: parseInt(price),
+      images,
       timestamp: FieldValue.serverTimestamp(),
     });
 
