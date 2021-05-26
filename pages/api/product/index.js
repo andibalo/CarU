@@ -22,6 +22,9 @@ const validateBody = initMiddleware(
       check("year")
         .exists({ checkFalsy: true })
         .withMessage("Year must not be empty"),
+      check("brand")
+        .exists({ checkFalsy: true })
+        .withMessage("Brand must not be empty"),
       check("quantity")
         .exists()
         .withMessage("Quantity must not be empty")
@@ -41,7 +44,8 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const FieldValue = admin.firestore.FieldValue;
 
-    const { name, description, year, quantity, price, images } = req.body;
+    const { name, description, year, quantity, price, brand, images } =
+      req.body;
 
     await validateBody(req, res);
 
@@ -58,6 +62,7 @@ export default async function handler(req, res) {
       quantity: parseInt(quantity),
       price: parseInt(price),
       images,
+      brand,
       timestamp: FieldValue.serverTimestamp(),
     });
 

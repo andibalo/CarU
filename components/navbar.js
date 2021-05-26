@@ -11,6 +11,7 @@ import {
   MenuList,
   MenuItem,
   IconButton,
+  Text,
   Skeleton,
 } from "@chakra-ui/react";
 import { Brand } from "./atoms/brand";
@@ -75,7 +76,22 @@ export const Navbar = ({ isAdmin = false }) => {
                   )}
                   <Link href="/cart">
                     <MenuItem icon={<AiOutlineShoppingCart />}>
-                      View Cart
+                      <Flex alignItems="center">
+                        <Text>View Cart</Text>
+                        <Spacer />
+                        <Flex
+                          alignItems="center"
+                          justifyContent="center"
+                          bg="red.500"
+                          h="20px"
+                          w="20px"
+                          borderRadius="50%"
+                        >
+                          <Text color="white" fontSize="xs">
+                            2
+                          </Text>
+                        </Flex>
+                      </Flex>
                     </MenuItem>
                   </Link>
                   <MenuItem

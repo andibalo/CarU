@@ -33,7 +33,6 @@ import Link from "next/link";
 const MAX_IMG_UPLOAD = 3;
 
 export default function EditProduct(props) {
-  console.log(props.product);
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: props.product.name,
@@ -54,7 +53,9 @@ export default function EditProduct(props) {
     try {
       console.log(formData);
 
-      const res = await axios.post("/api/product", { ...formData });
+      const res = await axios.put(`/api/product/${props.product.id}`, {
+        ...formData,
+      });
 
       setFormData({
         name: "",
