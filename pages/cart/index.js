@@ -30,14 +30,24 @@ import { AiOutlineDelete } from "@react-icons/all-files/ai/AiOutlineDelete";
 import { AiOutlineArrowRight } from "@react-icons/all-files/ai/AiOutlineArrowRight";
 import Link from "next/link";
 import { Button as CustomButton } from "../../components/atoms/Button";
+import { formatRupiah } from "../../utils/functions";
 
 export default function Cart() {
-  const { cartItems, removeItemFromCart, emptyCart } = useContext(CartContext);
+  const {
+    cartItems,
+    removeItemFromCart,
+    emptyCart,
+    incrementItemRentDays,
+    decrementItemRentDays,
+    cartTotal,
+  } = useContext(CartContext);
 
-  const handleRentDaysChange = (e) => {
-    console.log(e.target);
+  const getTotal = () => {
+    return cartItems.reduce((totalPrice, item) => {
+      return totalPrice + item.price * item.days;
+    }, 0);
   };
-  console.log("CART PAGE", cartItems);
+
   return (
     <div>
       <Navbar />
@@ -46,7 +56,7 @@ export default function Cart() {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>Image</Th>
+                <Th></Th>
                 <Th>Name</Th>
                 <Th>Total Days (Rent)</Th>
                 <Th>Price</Th>
@@ -56,7 +66,7 @@ export default function Cart() {
               <>
                 <Tbody>
                   {cartItems.map((item) => (
-                    <Tr>
+                    <Tr key={item.id}>
                       <Td>
                         <Image
                           src={item.images[0]}
@@ -71,20 +81,20 @@ export default function Cart() {
                           defaultValue={item.days}
                           min={1}
                           max={30}
-                          maxW="sm"
+                          maxW="100px"
                         >
-                          <NumberInputField
-                            name={item.id}
-                            value={item.days}
-                            onChange={(e) => handleRentDaysChange(e)}
-                          />
+                          <NumberInputField name={item.id} value={item.days} />
                           <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
+                            <NumberIncrementStepper
+                              onClick={() => incrementItemRentDays(item.id)}
+                            />
+                            <NumberDecrementStepper
+                              onClick={() => decrementItemRentDays(item.id)}
+                            />
                           </NumberInputStepper>
                         </NumberInput>
                       </Td>
-                      <Td isNumeric>{item.price}</Td>
+                      <Td isNumeric>{formatRupiah(item.price)} </Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -109,7 +119,9 @@ export default function Cart() {
                       <Flex>
                         <Text>To Pay:</Text>
                         <Spacer />
-                        <Text>test</Text>
+                        <Text fontSize="lg" color="brand.100">
+                          {formatRupiah(getTotal())}
+                        </Text>
                       </Flex>
                     </Th>
                   </Tr>

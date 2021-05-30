@@ -6,13 +6,13 @@ import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <CartContextProvider>
-      <Provider session={pageProps.session}>
-        <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
+      <CartContextProvider>
+        <Provider session={pageProps.session}>
           <Component {...pageProps} />
-        </ChakraProvider>
-      </Provider>
-    </CartContextProvider>
+        </Provider>
+      </CartContextProvider>
+    </ChakraProvider>
   );
 }
 

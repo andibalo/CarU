@@ -22,13 +22,33 @@ export const TopBrands = ({ products }) => {
             <Tab>Toyota</Tab>
             <Tab>Audi</Tab>
             <Tab>BMW</Tab>
+            <Tab>Mercedes</Tab>
+            <Tab>Lamborghini</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
               <SimpleGrid columns="4" spacing="5">
                 {products &&
-                  products.map((product) => <CarCard product={product} />)}
+                  products.map((product) => (
+                    <CarCard key={product.id} product={product} />
+                  ))}
               </SimpleGrid>
+            </TabPanel>
+            <TabPanel>
+              <Stack direction="row" spacing="5">
+                <CarCard />
+                <CarCard />
+                <CarCard />
+                <CarCard />
+              </Stack>
+            </TabPanel>
+            <TabPanel>
+              <Stack direction="row" spacing="5">
+                <CarCard />
+                <CarCard />
+                <CarCard />
+                <CarCard />
+              </Stack>
             </TabPanel>
             <TabPanel>
               <Stack direction="row" spacing="5">
