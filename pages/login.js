@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Navbar } from "../components/navbar";
 import {
   Flex,
@@ -13,9 +14,31 @@ import {
 import { Button } from "../components/atoms/Button";
 import { Footer } from "../components/footer";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
+import { signIn, getSession } from "next-auth/client";
 
 const Login = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const router = useRouter();
+
+  const handleLogin = async () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (!result.error) {
+      router.replace("/dashboard");
+    }
+  };
+
   return (
     <div>
       <Flex direction="column" minH="100vh">
@@ -52,8 +75,22 @@ const Login = () => {
                   Welcome Back!
                 </Heading>
               </Box>
-              <Input variant="flushed" placeholder="Email Address" mb="3" />
-              <Input variant="flushed" placeholder="Password" mb="3" />
+              <Input
+                variant="flushed"
+                placeholder="Email Address"
+                type="email"
+                mb="3"
+                ref={emailRef}
+                focusBorderColor="brand.100"
+              />
+              <Input
+                variant="flushed"
+                placeholder="Password"
+                type="password"
+                mb="3"
+                ref={passwordRef}
+                focusBorderColor="brand.100"
+              />
 
               <Text>
                 Don’t have an account?{" "}
@@ -64,7 +101,7 @@ const Login = () => {
                 </Link>
               </Text>
               <Spacer />
-              <Button>Login</Button>
+              <Button onClick={handleLogin}>Login</Button>
             </Flex>
           </Box>
         </Container>
@@ -75,3 +112,22 @@ const Login = () => {
 };
 
 export default Login;
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+}

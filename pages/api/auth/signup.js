@@ -49,6 +49,7 @@ const handler = async (req, res) => {
     const response = await db.collection("users").add({
       email,
       password: hashedPassword,
+      isAdmin: false,
       timestamp: FieldValue.serverTimestamp(),
     });
 
@@ -59,7 +60,7 @@ const handler = async (req, res) => {
     return res.status(200).json({ message: "ok" });
   }
 
-  return res.status(400).json({ message: "invalid api route" });
+  return res.status(400).json({ message: "invalid http method" });
 };
 
 export default handler;

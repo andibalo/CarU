@@ -7,11 +7,12 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { SectionHeader } from "../atoms/section-header";
 import { CarCard } from "../molecules/car-card";
 
-export const TopBrands = () => {
+export const TopBrands = ({ products }) => {
   return (
     <SectionWrapper zIndex="15">
       <Container maxW="container.xl">
@@ -24,12 +25,10 @@ export const TopBrands = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Stack direction="row" spacing="5">
-                <CarCard />
-                <CarCard />
-                <CarCard />
-                <CarCard />
-              </Stack>
+              <SimpleGrid columns="4" spacing="5">
+                {products &&
+                  products.map((product) => <CarCard product={product} />)}
+              </SimpleGrid>
             </TabPanel>
             <TabPanel>
               <Stack direction="row" spacing="5">

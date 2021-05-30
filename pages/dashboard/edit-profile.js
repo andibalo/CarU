@@ -2,12 +2,12 @@ import { Navbar } from "../../components/navbar";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { SideBar } from "../../components/admin/sidebar";
 
-export default function Products() {
+export default function Dashboard() {
   return (
     <Flex direction="column" minH="100vh" position="relative">
-      <Navbar isAdmin />
+      <Navbar />
       <Flex flex="1">
-        <SideBar />
+        <SideBar route="edit-profile" isUser />
         <Box flex="1" p="10">
           <Text>test</Text>
         </Box>

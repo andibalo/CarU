@@ -20,7 +20,7 @@ const Car = () => {
     <div>
       <Navbar />
       <SectionWrapper>
-        <Container maxW="container.xl">
+        <Container maxW="container.xl" pb="20">
           <Flex alignItems="center" mb="10">
             <Box>
               <Heading color="brand.100">Available Cars</Heading>
