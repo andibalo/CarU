@@ -1,7 +1,23 @@
 import { Box, Flex, Text, Heading, Center, Stack } from "@chakra-ui/react";
+import { formatRupiah } from "../../utils/functions";
 import { Button } from "../atoms/Button";
+import moment from "moment";
 
-export const OrderCard = () => {
+export const OrderCard = ({ order, isAdmin = false }) => {
+  console.log(order);
+
+  const {
+    id,
+    address,
+    amount,
+    contactNumber,
+    dateIssued,
+    days,
+    items,
+    receiverName,
+    status,
+  } = order;
+
   return (
     <Box
       p="5"
@@ -20,44 +36,56 @@ export const OrderCard = () => {
       <Center mb="5">
         <Heading size="md" color="gray.500">
           Order Id:{" "}
-          <Heading color="brand.100" display="inline" size="md">
-            SOME ORDER ID
-          </Heading>
+          <Box color="brand.100" as="span">
+            {id}
+          </Box>
         </Heading>
       </Center>
       <Flex>
         <Box flex="1">
           <Text color="gray.500">
             Date Issued:{" "}
-            <Text color="gray.900" display="inline" fontWeight="bold">
-              12/03/2021
-            </Text>
+            <Box as="span" color="gray.900" display="inline" fontWeight="bold">
+              {moment(dateIssued * 1000).format("DD/MM/YYYY hh:mm:ss A")}
+            </Box>
           </Text>
           <Text color="gray.500">
-            Amount:{" "}
-            <Text color="gray.900" display="inline" fontWeight="bold">
-              Rp. 1.230.000
-            </Text>
+            Total Amount:{" "}
+            <Box as="span" color="gray.900" display="inline" fontWeight="bold">
+              {formatRupiah(amount)}
+            </Box>
           </Text>
           <Text color="gray.500">
             Quantity:{" "}
-            <Text color="gray.900" display="inline" fontWeight="bold">
-              3
-            </Text>
+            <Box as="span" color="gray.900" display="inline" fontWeight="bold">
+              {items.length}
+            </Box>
+          </Text>
+          <Text color="gray.500">
+            Rent Duration:{" "}
+            <Box as="span" color="gray.900" display="inline" fontWeight="bold">
+              {`${days} days`}
+            </Box>
           </Text>
         </Box>
         <Box flex="1">
           <Text color="gray.500">Status:</Text>
           <Heading size="sm" color="brand.100">
-            Sudah Dikirim
+            {status}
           </Heading>
         </Box>
       </Flex>
       <Stack direction="row" spacing="5" mt="auto">
         <Button fullWidth>View Order Detail</Button>
-        <Button fullWidth variant="outline">
-          Set For Pickup
-        </Button>
+        {isAdmin ? (
+          <Button fullWidth variant="outline">
+            Change Order Status
+          </Button>
+        ) : (
+          <Button fullWidth variant="outline">
+            Set For Pickup
+          </Button>
+        )}
       </Stack>
     </Box>
   );

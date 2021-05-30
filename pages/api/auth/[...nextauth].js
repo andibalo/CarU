@@ -11,6 +11,7 @@ export default NextAuth({
     Providers.Credentials({
       async authorize(credentials) {
         let user;
+        let userId;
 
         const userRef = db.collection("users");
 
@@ -24,6 +25,7 @@ export default NextAuth({
 
         snapshot.forEach((doc) => {
           user = doc.data();
+          userId = doc.id;
         });
 
         const isPasswordValid = await bcrypt.compare(
@@ -37,6 +39,7 @@ export default NextAuth({
 
         //Returned object will be encoded in the jwt token
         return {
+          id: userId,
           email: user.email,
           isAdmin: user.isAdmin,
         };

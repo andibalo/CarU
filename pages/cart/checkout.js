@@ -43,6 +43,7 @@ export default function Checkout() {
       ...formData,
       amount: cartTotal,
       items: cartItems,
+      days: cartItems[0].days,
     };
 
     try {

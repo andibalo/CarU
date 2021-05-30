@@ -88,9 +88,9 @@ export const CartContextProvider = ({ children }) => {
     setCartTotal(0);
   };
 
-  const incrementItemRentDays = (productId) => {
+  const incrementItemRentDays = () => {
     const newCartItems = cartItems.map((item) => {
-      if (item.id === productId && !(item.days + 1 > 30)) {
+      if (!(item.days + 1 > 30)) {
         item.days += 1;
       }
 
@@ -102,9 +102,9 @@ export const CartContextProvider = ({ children }) => {
     setCartItems(newCartItems);
   };
 
-  const decrementItemRentDays = (productId) => {
+  const decrementItemRentDays = () => {
     const newCartItems = cartItems.map((item) => {
-      if (item.id === productId && !(item.days - 1 < 1)) {
+      if (!(item.days - 1 < 1)) {
         item.days -= 1;
       }
 

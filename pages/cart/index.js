@@ -58,7 +58,29 @@ export default function Cart() {
               <Tr>
                 <Th></Th>
                 <Th>Name</Th>
-                <Th>Total Days (Rent)</Th>
+                <Th>
+                  <Flex alignItems="center">
+                    <Text mr="3"> Total Days (Rent)</Text>
+                    {cartItems && cartItems.length > 0 && (
+                      <NumberInput
+                        defaultValue={cartItems[0].days}
+                        min={1}
+                        max={30}
+                        maxW="100px"
+                      >
+                        <NumberInputField alue={cartItems[0].days} />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper
+                            onClick={() => incrementItemRentDays()}
+                          />
+                          <NumberDecrementStepper
+                            onClick={() => decrementItemRentDays()}
+                          />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    )}
+                  </Flex>
+                </Th>
                 <Th>Price</Th>
               </Tr>
             </Thead>
@@ -76,24 +98,7 @@ export default function Cart() {
                         />
                       </Td>
                       <Td>{item.name}</Td>
-                      <Td>
-                        <NumberInput
-                          defaultValue={item.days}
-                          min={1}
-                          max={30}
-                          maxW="100px"
-                        >
-                          <NumberInputField name={item.id} value={item.days} />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper
-                              onClick={() => incrementItemRentDays(item.id)}
-                            />
-                            <NumberDecrementStepper
-                              onClick={() => decrementItemRentDays(item.id)}
-                            />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </Td>
+                      <Td>{item.days}</Td>
                       <Td isNumeric>{formatRupiah(item.price)} </Td>
                     </Tr>
                   ))}
