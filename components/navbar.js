@@ -90,7 +90,7 @@ export const Navbar = ({ isAdmin = false }) => {
                   {session && !loading && session.user.isAdmin && (
                     <Link href="/admin">
                       <MenuItem icon={<AiOutlineCrown />}>
-                        Admin dashboard
+                        Admin Dashboard
                       </MenuItem>
                     </Link>
                   )}

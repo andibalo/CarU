@@ -1,9 +1,33 @@
-import { Box, Flex, Text, Heading, Center, Stack } from "@chakra-ui/react";
-import { formatRupiah } from "../../utils/functions";
+import {
+  Box,
+  Flex,
+  Text,
+  Heading,
+  Center,
+  Stack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button as ChakraButton,
+  Spacer,
+} from "@chakra-ui/react";
+import { formatRupiah, orderStatusColorResolver } from "../../utils/functions";
 import { Button } from "../atoms/Button";
 import moment from "moment";
+import { AiOutlineCaretDown } from "@react-icons/all-files/ai/AiOutlineCaretDown";
+import {
+  DELIVERED,
+  DELIVERING,
+  ORDER_FINISHED,
+  READY_FOR_PICKUP,
+} from "../../utils/constants";
 
-export const OrderCard = ({ order, isAdmin = false }) => {
+export const OrderCard = ({
+  order,
+  isAdmin = false,
+  handleChangeOrderStatus,
+}) => {
   console.log(order);
 
   const {
@@ -69,21 +93,74 @@ export const OrderCard = ({ order, isAdmin = false }) => {
           </Text>
         </Box>
         <Box flex="1">
-          <Text color="gray.500">Status:</Text>
-          <Heading size="sm" color="brand.100">
-            {status}
-          </Heading>
+          <Box mb="3">
+            <Text color="gray.500">Status:</Text>
+            <Heading size="sm" color={orderStatusColorResolver(status)}>
+              {status}
+            </Heading>
+          </Box>
+          {isAdmin && status !== ORDER_FINISHED && (
+            <Menu>
+              <MenuButton as={ChakraButton} rightIcon={<AiOutlineCaretDown />}>
+                Set Order Status
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  onClick={() => handleChangeOrderStatus(DELIVERING, id)}
+                >
+                  <Flex w="full" alignItems="center">
+                    <Text> Sedang Dikirim</Text>
+                    <Spacer />
+                    {status === DELIVERING && (
+                      <Box
+                        bg="brand.100"
+                        h="10px"
+                        w="10px"
+                        borderRadius="50%"
+                      ></Box>
+                    )}
+                  </Flex>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => handleChangeOrderStatus(DELIVERED, id)}
+                >
+                  <Flex w="full" alignItems="center">
+                    <Text> Sudah Dikirim</Text>
+                    <Spacer />
+                    {status === DELIVERED && (
+                      <Box
+                        bg="brand.100"
+                        h="10px"
+                        w="10px"
+                        borderRadius="50%"
+                      ></Box>
+                    )}
+                  </Flex>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
         </Box>
       </Flex>
       <Stack direction="row" spacing="5" mt="auto">
         <Button fullWidth>View Order Detail</Button>
-        {isAdmin ? (
-          <Button fullWidth variant="outline">
-            Change Order Status
+        {!isAdmin ? (
+          <Button
+            isDisabled={status !== DELIVERED}
+            fullWidth
+            variant="outline"
+            onClick={() => handleChangeOrderStatus(READY_FOR_PICKUP, id)}
+          >
+            Set For Pickup
           </Button>
         ) : (
-          <Button fullWidth variant="outline">
-            Set For Pickup
+          <Button
+            isDisabled={status !== READY_FOR_PICKUP}
+            fullWidth
+            variant="outline"
+            onClick={() => handleChangeOrderStatus(ORDER_FINISHED, id)}
+          >
+            Finish Order
           </Button>
         )}
       </Stack>

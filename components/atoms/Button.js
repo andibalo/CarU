@@ -8,9 +8,11 @@ export const Button = ({
   fullWidth = false,
   leftIcon,
   rightIcon,
+  isDisabled = false,
 }) => {
   return (
     <ChakraButton
+      isDisabled={isDisabled}
       onClick={onClick}
       leftIcon={leftIcon}
       rightIcon={rightIcon}

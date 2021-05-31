@@ -14,7 +14,7 @@ export const CarCard = ({ product = {}, isAdmin = false }) => {
     name = "Toyota Mercury",
     description = "test",
     price = "300",
-    quantity = "4",
+    quantity = 4,
     year = "2014",
     brand = "toyota",
     images = [],
@@ -74,12 +74,18 @@ export const CarCard = ({ product = {}, isAdmin = false }) => {
               </Text>
             </Text>
           </Flex>
-          <Text
-            textAlign="right"
-            color="red.500"
-            fontWeight="medium"
-            mb="3"
-          >{`${quantity} left in stock!`}</Text>
+          {quantity <= 0 ? (
+            <Text textAlign="right" color="red.500" fontWeight="medium" mb="3">
+              Sold Out!
+            </Text>
+          ) : (
+            <Text
+              textAlign="right"
+              color="red.500"
+              fontWeight="medium"
+              mb="3"
+            >{`${quantity} left in stock!`}</Text>
+          )}
         </Box>
         <Spacer />
         <Stack direction="row">
@@ -93,7 +99,11 @@ export const CarCard = ({ product = {}, isAdmin = false }) => {
               <Button fullWidth>Edit Product</Button>
             </Link>
           ) : (
-            <Button onClick={() => addItemToCart(product)} fullWidth>
+            <Button
+              isDisabled={quantity <= 0}
+              onClick={() => addItemToCart(product)}
+              fullWidth
+            >
               Rent Now
             </Button>
           )}
