@@ -16,6 +16,7 @@ export default async function handler(req, res) {
     const ordersRef = db.collection("orders");
     const snapshot = await ordersRef
       .where("userId", "==", session.user.id)
+      .orderBy("dateIssued", "desc")
       .get();
 
     if (snapshot.empty) {

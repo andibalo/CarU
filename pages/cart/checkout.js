@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import db from "../../utils/db/index";
 import {
   Box,
   Container,
@@ -14,6 +15,7 @@ import {
   Spacer,
   Text,
   Divider,
+  Button as ChakraButton,
 } from "@chakra-ui/react";
 import { SectionWrapper } from "../../components/atoms/section-wrapper";
 import Link from "next/link";
@@ -22,14 +24,16 @@ import { formatRupiah } from "../../utils/functions";
 import { Button } from "../../components/atoms/Button";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { AiOutlineLeft } from "@react-icons/all-files/ai/AiOutlineLeft";
+import { getSession } from "next-auth/client";
 
-export default function Checkout() {
+export default function Checkout(props) {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    receiverName: "",
-    contactNumber: "",
-    address: "",
+    receiverName: props.user.name,
+    contactNumber: props.user.phone,
+    address: props.user.address,
   });
 
   const { receiverName, contactNumber, address } = formData;
@@ -75,6 +79,11 @@ export default function Checkout() {
     <div>
       <Container maxW="container.xl" pb="20">
         <SectionWrapper>
+          <Link href="/cart">
+            <ChakraButton leftIcon={<AiOutlineLeft />} variant="ghost" mb="8">
+              Return to cart
+            </ChakraButton>
+          </Link>
           <Heading color="brand.100" mb="5">
             Checkout
           </Heading>
@@ -84,6 +93,7 @@ export default function Checkout() {
                 <FormControl mb="3">
                   <FormLabel>Nama Penerima</FormLabel>
                   <Input
+                    isReadOnly={true}
                     type="text"
                     name="receiverName"
                     value={receiverName}
@@ -93,6 +103,7 @@ export default function Checkout() {
                 <FormControl mb="3">
                   <FormLabel>No. Kontak</FormLabel>
                   <Input
+                    isReadOnly={true}
                     type="text"
                     name="contactNumber"
                     value={contactNumber}
@@ -102,6 +113,7 @@ export default function Checkout() {
                 <FormControl mb="3">
                   <FormLabel>Alamat Pengiriman</FormLabel>
                   <Textarea
+                    isReadOnly={true}
                     name="address"
                     value={address}
                     onChange={(e) => handleChange(e)}
@@ -156,4 +168,32 @@ export default function Checkout() {
       </Container>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: true,
+      },
+    };
+  }
+
+  const userRef = db.collection("users").doc(session.user.id);
+  const doc = await userRef.get();
+
+  const user = {
+    name: doc.data().name,
+    phone: doc.data().phone,
+    address: doc.data().address,
+  };
+
+  return {
+    props: {
+      user,
+    },
+  };
 }

@@ -29,42 +29,52 @@ export const TopBrands = ({ products }) => {
             <TabPanel>
               <SimpleGrid columns="4" spacing="5">
                 {products &&
-                  products.map((product) => (
-                    <CarCard key={product.id} product={product} />
-                  ))}
+                  products
+                    .filter((product) => product.brand === "toyota")
+                    .map((product) => (
+                      <CarCard key={product.id} product={product} />
+                    ))}
               </SimpleGrid>
             </TabPanel>
             <TabPanel>
-              <Stack direction="row" spacing="5">
-                <CarCard />
-                <CarCard />
-                <CarCard />
-                <CarCard />
-              </Stack>
+              <SimpleGrid columns="4" spacing="5">
+                {products &&
+                  products
+                    .filter((product) => product.brand === "audi")
+                    .map((product) => (
+                      <CarCard key={product.id} product={product} />
+                    ))}
+              </SimpleGrid>
             </TabPanel>
             <TabPanel>
-              <Stack direction="row" spacing="5">
-                <CarCard />
-                <CarCard />
-                <CarCard />
-                <CarCard />
-              </Stack>
+              <SimpleGrid columns="4" spacing="5">
+                {products &&
+                  products
+                    .filter((product) => product.brand === "audi")
+                    .map((product) => (
+                      <CarCard key={product.id} product={product} />
+                    ))}
+              </SimpleGrid>
             </TabPanel>
             <TabPanel>
-              <Stack direction="row" spacing="5">
-                <CarCard />
-                <CarCard />
-                <CarCard />
-                <CarCard />
-              </Stack>
+              <SimpleGrid columns="4" spacing="5">
+                {products &&
+                  products
+                    .filter((product) => product.brand === "audi")
+                    .map((product) => (
+                      <CarCard key={product.id} product={product} />
+                    ))}
+              </SimpleGrid>
             </TabPanel>
             <TabPanel>
-              <Stack direction="row" spacing="5">
-                <CarCard />
-                <CarCard />
-                <CarCard />
-                <CarCard />
-              </Stack>
+              <SimpleGrid columns="4" spacing="5">
+                {products &&
+                  products
+                    .filter((product) => product.brand === "audi")
+                    .map((product) => (
+                      <CarCard key={product.id} product={product} />
+                    ))}
+              </SimpleGrid>
             </TabPanel>
           </TabPanels>
         </Tabs>

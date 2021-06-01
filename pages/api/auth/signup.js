@@ -20,6 +20,17 @@ const validateBody = initMiddleware(
         .withMessage("Password must not be empty")
         .isLength({ min: 6 })
         .withMessage("Password must be at least 6 characters long"),
+      check("phone")
+        .exists({ checkFalsy: true })
+        .withMessage("Phone must not be empty"),
+      check("name")
+        .exists({ checkFalsy: true })
+        .withMessage("Name must not be empty"),
+      check("address")
+        .exists({ checkFalsy: true })
+        .withMessage("Address must not be empty")
+        .isLength({ max: 150 })
+        .withMessage("Address not exceed 150 characters"),
     ],
     validationResult
   )
@@ -29,7 +40,7 @@ const handler = async (req, res) => {
   if (req.method === "POST") {
     const FieldValue = admin.firestore.FieldValue;
     const usersRef = db.collection("users");
-    const { email, password } = req.body;
+    const { email, password, name, phone, address } = req.body;
 
     await validateBody(req, res);
 
@@ -50,6 +61,9 @@ const handler = async (req, res) => {
       email,
       password: hashedPassword,
       isAdmin: false,
+      name,
+      phone,
+      address,
       timestamp: FieldValue.serverTimestamp(),
     });
 

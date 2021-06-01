@@ -63,7 +63,11 @@ export default async function handler(req, res) {
 
       let doc = await productRef.get();
       console.log("DOC", doc.data());
-      return doc.data();
+      return {
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp._seconds,
+      };
     });
 
     const newItems = await Promise.all(promises);
@@ -100,7 +104,7 @@ export default async function handler(req, res) {
     }
 
     const ordersRef = db.collection("orders");
-    const snapshot = await ordersRef.get();
+    const snapshot = await ordersRef.orderBy("dateIssued", "desc").get();
 
     if (snapshot.empty) {
       console.log("No matching documents.");

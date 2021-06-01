@@ -1,16 +1,30 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Navbar } from "../../components/navbar";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text, Heading, useDisclosure } from "@chakra-ui/react";
 import { SideBar } from "../../components/admin/sidebar";
 import { OrderCard } from "../../components/molecules/order-card";
 import db from "../../utils/db/index";
 import { getSession } from "next-auth/client";
 import axios from "axios";
+import { OrderModal } from "../../components/molecules/order-modal";
 
 export default function Orders(props) {
   const { isAdmin } = props;
 
   const [orders, setOrders] = useState(props.orders);
+  const [modalContent, setModalContent] = useState({
+    id: "",
+    address: "",
+    amount: "",
+    contactNumber: "",
+    dateIssued: "",
+    days: "",
+    items: "",
+    receiverName: "",
+    status: "",
+  });
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getOrders = async () => {
     try {
@@ -34,26 +48,54 @@ export default function Orders(props) {
     }
   };
 
+  const handleOpenModal = (content) => {
+    setModalContent({ ...modalContent, ...content });
+
+    onOpen();
+  };
+
   return (
-    <Flex direction="column" minH="100vh" position="relative">
-      <Navbar isAdmin />
-      <Flex flex="1">
-        <SideBar route="orders" />
-        <Box flex="1" p="10">
-          {orders && orders.length > 0 ? (
-            orders.map((order) => (
-              <OrderCard
-                order={order}
-                isAdmin={isAdmin}
-                handleChangeOrderStatus={handleChangeOrderStatus}
-              />
-            ))
-          ) : (
-            <Text>no oder</Text>
-          )}
-        </Box>
+    <React.Fragment>
+      <Flex direction="column" minH="100vh" position="relative">
+        <Navbar isAdmin />
+        <Flex flex="1">
+          <SideBar route="orders" />
+          <Box flex="1" p="10">
+            {orders && orders.length > 0 ? (
+              orders.map((order) => (
+                <OrderCard
+                  order={order}
+                  isAdmin={isAdmin}
+                  handleChangeOrderStatus={handleChangeOrderStatus}
+                  handleChangeOrderStatus={handleChangeOrderStatus}
+                  onOpen={onOpen}
+                  modalContent={modalContent}
+                  setModalContent={setModalContent}
+                  handleOpenModal={handleOpenModal}
+                />
+              ))
+            ) : (
+              <Flex
+                w="full"
+                h="full"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Box textAlign="center">
+                  <Heading mb="3">No Orders Yet</Heading>
+                  <Text>Try checking again later.</Text>
+                </Box>
+              </Flex>
+            )}
+          </Box>
+        </Flex>
       </Flex>
-    </Flex>
+      <OrderModal
+        isOpen={isOpen}
+        onClose={onClose}
+        modalContent={modalContent}
+      />
+    </React.Fragment>
   );
 }
 

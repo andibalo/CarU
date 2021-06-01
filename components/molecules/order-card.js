@@ -27,9 +27,8 @@ export const OrderCard = ({
   order,
   isAdmin = false,
   handleChangeOrderStatus,
+  handleOpenModal,
 }) => {
-  console.log(order);
-
   const {
     id,
     address,
@@ -143,7 +142,9 @@ export const OrderCard = ({
         </Box>
       </Flex>
       <Stack direction="row" spacing="5" mt="auto">
-        <Button fullWidth>View Order Detail</Button>
+        <Button fullWidth onClick={() => handleOpenModal(order)}>
+          View Order Detail
+        </Button>
         {!isAdmin ? (
           <Button
             isDisabled={status !== DELIVERED}
