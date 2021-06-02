@@ -57,11 +57,7 @@ const About = () => {
                   borderRadius="3xl"
                   overflow="hidden"
                 >
-                  <Image
-                    src="/placeholder.png"
-                    layout="fill"
-                    objectFit="cover"
-                  />
+                  <Image src="/office.jpg" layout="fill" objectFit="cover" />
                 </Box>
               </Box>
             </Box>
@@ -72,10 +68,30 @@ const About = () => {
         <Container maxW="container.xl" pb="20">
           <SectionHeader textAlign="center" text="Meet The Founders" mb="10" />
           <Stack direction="row" spacing="5">
-            <FounderCard />
-            <FounderCard />
-            <FounderCard />
-            <FounderCard />
+            <FounderCard
+              imageName="andi"
+              name="Andi Usman Balo"
+              position="CEO"
+              desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"
+            />
+            <FounderCard
+              imageName="charoline"
+              name="Charoline Kandoko"
+              position="CEO of Bocil"
+              desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"
+            />
+            <FounderCard
+              imageName="vincent"
+              name="Vincent"
+              position="CEO of Dipanggil"
+              desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"
+            />
+            <FounderCard
+              imageName="martin"
+              name="Hernando Martin"
+              position="CEO of Lag"
+              desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"
+            />
           </Stack>
         </Container>
       </SectionWrapper>

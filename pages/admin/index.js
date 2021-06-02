@@ -246,10 +246,6 @@ export default function AdminHome(props) {
                   value={quantity}
                   onChange={(e) => handleChange(e)}
                 />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
               </NumberInput>
             </FormControl>
             <FormControl id="price" mb="6">

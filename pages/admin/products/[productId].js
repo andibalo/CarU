@@ -57,15 +57,6 @@ export default function EditProduct(props) {
         ...formData,
       });
 
-      setFormData({
-        name: "",
-        description: "",
-        quantity: 1,
-        price: 0,
-        year: "",
-        images: [],
-      });
-
       router.replace("/admin/products");
     } catch (error) {
       console.log(error);
@@ -103,6 +94,7 @@ export default function EditProduct(props) {
   };
 
   const handleChange = (e) => {
+    console.log(e.target.value);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -253,10 +245,6 @@ export default function EditProduct(props) {
                   value={quantity}
                   onChange={(e) => handleChange(e)}
                 />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
               </NumberInput>
             </FormControl>
             <FormControl id="price" mb="6">

@@ -28,7 +28,7 @@ export const WhyUs = () => {
               borderRadius="3xl"
               overflow="hidden"
             >
-              <Image src="/placeholder.png" layout="fill" objectFit="cover" />
+              <Image src="/car.jpg" layout="fill" objectFit="cover" />
             </Box>
           </Box>
           <Box flex="1">

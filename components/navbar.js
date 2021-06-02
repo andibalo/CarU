@@ -41,8 +41,6 @@ export const Navbar = ({ isAdmin = false }) => {
     signOut();
   };
 
-  console.log(cartItems);
-
   return (
     <Box boxShadow={isAdmin ? "lg" : null} zIndex={isAdmin ? "docked" : null}>
       <Container maxW="container.xl" py={4}>
